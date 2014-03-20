@@ -1,9 +1,32 @@
-// If life was easy, we could just do things the easy way:
-// var getElementsByClassName = function (className) {
-//   return document.getElementsByClassName(className);
-// };
+var getElementsByClassName = function (className, nodes) {
+  // store passing elements
+  var result = [];
 
-// But in stead we're going to implement it from scratch:
-var getElementsByClassName = function (className) {
-  // your code here
+  // if nodes is not declared, nodes = document body;
+  if (!nodes) {
+  	nodes = document.body;
+  }
+
+  // Grab all nodes of document.Body & iterate through;
+  // document.body.childNodes[classCheck];
+  _.each(nodes.childNodes, function (classCheck) {
+  
+    // Check classList to match className & push to result;
+    // document.body.childNodes[classCheck].classList == className
+  	_.each(classCheck.classList, function(element) {
+  		if(element == className) {
+  			result.push(classCheck);
+  		}
+  	});
+
+  	// Run getElementsByClassName for inner childNodes
+  	// document.body.childNodes[classCheck].childNodes
+  	if(classCheck.childNodes) {
+  		result = _.union(result, getElementsByClassName(className, classCheck));
+  	}
+  });
+
+  return result;
+
+  
 };
